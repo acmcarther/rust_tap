@@ -67,5 +67,24 @@ fn it_doesnt_tap_on_none() {
   let mut x = 1;
   let none = None;
   let res = none.tap(|val| x = val + x);
+  assert!(res == None);
+  assert!(x == 1);
+}
+
+#[test]
+fn it_taps_on_ok() {
+  let mut x = 1;
+  let ok: Result<i32, ()> = Ok(2);
+  let res = ok.tap(|val| x = val + x);
+  assert!(res.unwrap() == 2);
+  assert!(x == 3);
+}
+
+#[test]
+fn it_doesnt_tap_on_error() {
+  let mut x = 1;
+  let err: Result<i32, i32> = Err(5);
+  let res = err.tap(|val| x = val + x);
+  assert!(res == Err(5));
   assert!(x == 1);
 }
